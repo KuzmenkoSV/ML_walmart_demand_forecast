@@ -1,0 +1,66 @@
+schema: '2.0'
+stages:
+  load:
+    cmd: python src/load.py
+    deps:
+    - path: data/external/
+      hash: md5
+      md5: 9fde4f0a15c7c5bfd87198efec98eb59.dir
+      size: 450472284
+      nfiles: 6
+    - path: src/load.py
+      hash: md5
+      md5: 4f74acb710d67f8e9ab2c58f2bcb0d01
+      size: 1541
+  features:
+    cmd: python src/features.py --input data/processed/df_sales_train_validation.csv
+      --output_train data/processed/train_df.csv --output_test data/processed/val_df.csv
+    deps:
+    - path: data/processed/df_sales_train_validation.csv
+      hash: md5
+      md5: 633e7e6340c3a0a4be1ccbf1a5b26b26
+      size: 521689596
+    - path: src/features.py
+      hash: md5
+      md5: 0632eb916fc91c2636232f34352eda8b
+      size: 3041
+    outs:
+    - path: data/processed/train_df.csv
+      hash: md5
+      md5: 3aa39162f3bde8475016f3ac58a4ce11
+      size: 163960
+    - path: data/processed/val_df.csv
+      hash: md5
+      md5: b6ea40e961ea1814b4ae64a724ed2648
+      size: 783
+  train:
+    cmd: python src/train.py --train data/processed/train_df.csv --model models/model.pkl
+    deps:
+    - path: data/processed/train_df.csv
+      hash: md5
+      md5: 3aa39162f3bde8475016f3ac58a4ce11
+      size: 163960
+    - path: src/train.py
+      hash: md5
+      md5: 4ab1f6eace00db07fa982d7038df09af
+      size: 2973
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 8a5504555ae4f23991f542f7f64d5958
+      size: 80788
+  test:
+    cmd: python src/test.py --test data/processed/val_df.csv --model models/model.pkl
+    deps:
+    - path: data/processed/val_df.csv
+      hash: md5
+      md5: b6ea40e961ea1814b4ae64a724ed2648
+      size: 783
+    - path: models/model.pkl
+      hash: md5
+      md5: 8a5504555ae4f23991f542f7f64d5958
+      size: 80788
+    - path: src/test.py
+      hash: md5
+      md5: 40bc7ea54982d5f5fd4ed29fbde52a42
+      size: 3689

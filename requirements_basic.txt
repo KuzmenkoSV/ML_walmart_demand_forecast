@@ -12,6 +12,3 @@ pandas
 matplotlib
 scipy
 click
-boto3
-psycopg2-binary
-apache-airflow[postgres,s3]==2.7.2

@@ -1,0 +1,32 @@
+stages:
+  load:
+    cmd: python src/dvc_pipeline/load.py
+    deps:
+      - src/dvc_pipeline/load.py
+      - data/external/
+
+  features:
+    cmd: python src/dvc_pipeline/features.py --input data/processed/df_sales_train_validation.csv --output_train data/processed/train_df.csv --output_test data/processed/val_df.csv
+    deps:
+      - src/dvc_pipeline/features.py
+      - data/processed/df_sales_train_validation.csv
+    outs:
+      - data/processed/train_df.csv
+      - data/processed/val_df.csv
+
+  train:
+    cmd: python src/dvc_pipeline/train.py --train data/processed/train_df.csv --model models/model.pkl
+    deps:
+      - src/dvc_pipeline/train.py
+      - data/processed/train_df.csv 
+    outs:
+      - models/model.pkl
+
+
+  test:
+    cmd: python src/dvc_pipeline/test.py --test data/processed/val_df.csv --model models/model.pkl
+    deps:
+      - src/dvc_pipeline/test.py
+      - data/processed/val_df.csv
+      - models/model.pkl
+

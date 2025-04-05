@@ -1,8 +1,14 @@
 # Data
-/data/
-
+/data/external/
+/data/interim/
+/data/processed/
+/data/raw/
+!data/*.dvc
 # Mac OS-specific storage files
 .DS_Store
+
+ML_venv_prod/
+catboost_info/
 
 # vim
 *.swp
