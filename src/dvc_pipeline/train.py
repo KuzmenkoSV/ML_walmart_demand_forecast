@@ -2,9 +2,18 @@ import pandas as pd
 import argparse
 import joblib
 from catboost import CatBoostRegressor,  Pool
+import click
+  #  parser = argparse.ArgumentParser()  # Создаем парсер аргументов
+   # parser.add_argument("--train", type=str, required=True, help="Путь для трэйна")
+    #parser.add_argument("--model", type=str, required=True, help="Путь для обученной модели")
 
-def train_data(train_file, model_file):
-    train_df = pd.read_csv(train_file)
+
+
+@click.command()
+@click.option('--train', help="Путь для трейна")
+@click.option('--model', help="Путь для модели")
+def train_data(train, model):
+    train_df = pd.read_csv(train)
     # Define features and target variable
     features = ['dept_id', 'item_id', 'cat_id', 'day_of_week', 'month', 'year', 'sales_last_week', 'sales_last_month', 'moving_avg_7', 'moving_avg_30']
     target = 'value'
@@ -46,14 +55,14 @@ def train_data(train_file, model_file):
     best_model.fit(train_pool, early_stopping_rounds=50)
 
     # Сохранение модели
-    joblib.dump(best_model, model_file)
-    print(f"Модель сохранена в {model_file}")
+    joblib.dump(best_model, model)
+    print(f"Модель сохранена в {model}")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()  # Создаем парсер аргументов
-    parser.add_argument("--train", type=str, required=True, help="Путь для трэйна")
-    parser.add_argument("--model", type=str, required=True, help="Путь для обученной модели")
-    args = parser.parse_args()  # Считываем аргументы
+  #  parser = argparse.ArgumentParser()  # Создаем парсер аргументов
+   # parser.add_argument("--train", type=str, required=True, help="Путь для трэйна")
+    #parser.add_argument("--model", type=str, required=True, help="Путь для обученной модели")
+    #args = parser.parse_args()  # Считываем аргументы
 
     # Передаем аргументы в функцию
-    train_data(args.train, args.model)
+    train_data()

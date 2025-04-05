@@ -7,7 +7,8 @@ def load_and_process_data():
     CALENDAR_PATH = 'C:\Walmart_project_Kuzmenko\data\external\m5-forecasting-accuracy\calendar.csv'
     TRAIN_VALIDATION_PATH = 'C:\Walmart_project_Kuzmenko\data\external\m5-forecasting-accuracy\sales_train_validation.csv'
     OUTPUT = 'C:\Walmart_project_Kuzmenko\data\processed\df_sales_train_validation.csv'
-    # sell_prices = pd.read_csv(SELL_PRICES_PATH)
+   
+   
     sell_prices = pd.read_csv(SELL_PRICES_PATH)
     sample_submission = pd.read_csv(SAMPLE_SUBMISSION_PATH)
     calendar = pd.read_csv(CALENDAR_PATH)

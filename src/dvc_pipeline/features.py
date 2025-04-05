@@ -1,9 +1,15 @@
 import pandas as pd
 import argparse
 import os
+import click
 
-def process_data(prep_file, train_file, eval_file):
-    df_sales_train_validation = pd.read_csv(prep_file)
+
+@click.command()
+@click.option('--input', help="Путь к подготовленному датасету данным")
+@click.option('--output_train', help="Путь для train.csv")
+@click.option('--output_test', help="Путь для test.csv")
+def process_data(input, output_train, output_test):
+    df_sales_train_validation = pd.read_csv(input)
     df_sales_train_validation = df_sales_train_validation[df_sales_train_validation['item_id'] == 'FOODS_1_003']
     df_sales_train_validation['date'] = pd.to_datetime(df_sales_train_validation['date'])
   
@@ -37,15 +43,15 @@ def process_data(prep_file, train_file, eval_file):
         & (df_sales_train_validation['date'] <= val_end_date)
     ]
 
-    train_df.to_csv(train_file, index=False)
-    val_df.to_csv(eval_file, index=False)
+    train_df.to_csv(output_train, index=False)
+    val_df.to_csv(output_test, index=False)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()  # Создаем парсер аргументов
-    parser.add_argument("--input", type=str, required=True, help="Путь к подготовленному датасету данным")
-    parser.add_argument("--output_train", type=str, required=True, help="Путь для train.csv")
-    parser.add_argument("--output_test", type=str, required=True, help="Путь для test.csv")
-    args = parser.parse_args()  # Считываем аргументы
+    #parser = argparse.ArgumentParser()  # Создаем парсер аргументов
+    #parser.add_argument("--input", type=str, required=True, help="Путь к подготовленному датасету данным")
+    #parser.add_argument("--output_train", type=str, required=True, help="Путь для train.csv")
+    #parser.add_argument("--output_test", type=str, required=True, help="Путь для test.csv")
+    #args = parser.parse_args()  # Считываем аргументы
 
     # Передаем аргументы в функцию
-    process_data(args.input, args.output_train, args.output_test)
+    process_data()

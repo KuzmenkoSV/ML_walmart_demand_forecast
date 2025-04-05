@@ -5,10 +5,14 @@ from catboost import CatBoostRegressor,  Pool
 import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error, mean_absolute_percentage_error, max_error
+import click
 
-def test_data(test_file, model_file):
-    val_df = pd.read_csv(test_file)
-    model = joblib.load(model_file)
+@click.command()
+@click.option('--model', type=str, required=True, help="Путь для обученной модели")
+@click.option('--test', type=str, required=True, help="Путь для теста")
+def test_data(test, model):
+    val_df = pd.read_csv(test)
+    model_prod = joblib.load(model)
     # Define features and target variable
     features = ['dept_id', 'item_id', 'cat_id', 'day_of_week', 'month', 'year', 'sales_last_week', 'sales_last_month', 'moving_avg_7', 'moving_avg_30']
     target = 'value'
@@ -23,7 +27,7 @@ def test_data(test_file, model_file):
     test_pool = Pool(X_test, y_test, cat_features=categorical_features)
 
     # Train the model
-    y_pred = model.predict(X_test)
+    y_pred = model_prod.predict(X_test)
 
     val_df['predicted'] = y_pred
     val_df["store_id"] = 'CA_3'
@@ -69,10 +73,10 @@ def test_data(test_file, model_file):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()  # Создаем парсер аргументов
-    parser.add_argument("--test", type=str, required=True, help="Путь для теста")
-    parser.add_argument("--model", type=str, required=True, help="Путь для обученной модели")
-    args = parser.parse_args()  # Считываем аргументы
+   # parser = argparse.ArgumentParser()  # Создаем парсер аргументов
+   # parser.add_argument("--test", type=str, required=True, help="Путь для теста")
+   # parser.add_argument("--model", type=str, required=True, help="Путь для обученной модели")
+   # args = parser.parse_args()  # Считываем аргументы
 
     # Передаем аргументы в функцию
-    test_data(args.test, args.model)
+    test_data()
